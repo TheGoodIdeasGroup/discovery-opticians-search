@@ -24,20 +24,19 @@ const PlaceDetails = ({ place, refProp, selected }) => {
   const classes = useStyles()
 
   const {
-    photos: { primary, secondary },
+    // photos: { primary, secondary },
     name,
     categories,
-    city,
-    address_details,
+    post_town,
+    location,
     zipcode,
-    id,
-    contacts: { phone_numbers },
+    fsq_id,
   } = place
 
   return (
-    <Card elevation={6} id={id}>
+    <Card elevation={6} id={fsq_id}>
       <CardContent style={{ padding: 0, marginBottom: 20 }}>
-        <CardImage primary={primary} secondary={secondary} name={name} />
+        {/* <CardImage primary={primary} secondary={secondary} name={name} /> */}
         <div
           style={{
             marginTop: 20,
@@ -50,15 +49,15 @@ const PlaceDetails = ({ place, refProp, selected }) => {
           <Typography gutterBottom variant={"h5"}>
             {name}
           </Typography>
-          {city && (
+          {post_town && (
             <Box display="flex" justifyContent="space-between">
               <Typography variant="subtitle1">City</Typography>
               <Typography gutterBottom variant="subtitle1">
-                {city}
+                {post_town}
               </Typography>
             </Box>
           )}
-          {address_details && (
+          {location && (
             <Box
               display="flex"
               style={{ marginBottom: 10 }}
@@ -70,12 +69,11 @@ const PlaceDetails = ({ place, refProp, selected }) => {
                 variant="subtitle2"
                 style={{ marginLeft: 10 }}
               >
-                {address_details.number}, {address_details.street_name}{" "}
-                {zipcode}
+                {location.postcode}, {location.address} {zipcode}
               </Typography>
             </Box>
           )}
-          {phone_numbers && (
+          {/* {phone_numbers && (
             <Box
               display="flex"
               style={{ marginBottom: 10 }}
@@ -91,8 +89,8 @@ const PlaceDetails = ({ place, refProp, selected }) => {
                   phone_numbers.map((num) => <span>{num}</span>)}
               </Typography>
             </Box>
-          )}
-          <Box display="flex">
+          )} */}
+          {/* <Box display="flex">
             <Typography variant="h6">Services</Typography>
           </Box>
           <Box display="flex" style={{ flexWrap: "wrap" }}>
@@ -111,7 +109,7 @@ const PlaceDetails = ({ place, refProp, selected }) => {
                   />
                 )
               })}
-          </Box>
+          </Box> */}
         </div>
         <CardActions>
           <Button
@@ -124,7 +122,7 @@ const PlaceDetails = ({ place, refProp, selected }) => {
             color="primary"
             component={Link}
             to={{
-              pathname: `/location/${id}`,
+              pathname: `/location/${fsq_id}`,
             }}
           >
             View Location

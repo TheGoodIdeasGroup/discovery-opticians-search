@@ -5,14 +5,7 @@ import useStyles from "./styles"
 import PlaceDetails from "../PlaceDetails/PlaceDetails"
 
 //existing components
-import {
-  Grid,
-  Typography,
-  // InputLabel,
-  FormControl,
-  TextField,
-  Button,
-} from "@material-ui/core"
+import { Grid, Typography } from "@material-ui/core"
 
 //**move later
 import usePlacesAutocomplete, {
@@ -29,25 +22,18 @@ import {
 
 import "@reach/combobox/styles.css"
 
-//data
-// import countries from "../../countries"
-// import services from "../../services"
-
 const List = ({
   places,
   type,
   setType,
   country,
-  // setCountry,
   childClicked,
-  // setChildClicked,
   latLng,
   setLatLng,
 }) => {
   const classes = useStyles()
 
   const [elRefs, setElRefs] = useState([])
-  const [userInputPostcode, setUserInputPostcode] = useState("")
 
   useEffect(() => {
     console.log(childClicked)
@@ -81,7 +67,9 @@ const List = ({
     setValue,
   } = usePlacesAutocomplete({
     requestOptions: {
-      country: "uk",
+      region: "uk",
+      types: ["(regions)"],
+      componentRestrictions: { country: "uk" },
     },
   })
 
@@ -106,28 +94,6 @@ const List = ({
         </Typography>
       )} */}
 
-      {/* <FormControl className={classes.formControl}>
-        <TextField
-          value={userInputPostcode}
-          onChange={(e) => {
-            console.log(e.target.value)
-
-            setUserInputPostcode(e.target.value)
-          }}
-          label="Postcode"
-          variant="standard"
-        />
-        <Button
-          onClick={() => {
-            setPostcode(userInputPostcode)
-            console.log(`postcode set to ${postcode}`)
-          }}
-          variant="contained"
-          color="primary"
-        >
-          Submit
-        </Button>
-      </FormControl> */}
       <Combobox
         onSelect={async (address) => {
           try {
@@ -158,19 +124,11 @@ const List = ({
       </Combobox>
 
       <Grid container spacing={3} className={classes.list}>
-        {country &&
-          places
-            ?.filter(
-              (place) =>
-                //  place.country.includes(country)
-                !country || place.country.includes(country)
-              // && (!type || place.categories.includes(type))
-            )
-            .map((place, idx) => (
-              <Grid item key={idx} md={12}>
-                <PlaceDetails place={place} id={place.id} />
-              </Grid>
-            ))}
+        {places?.map((place, idx) => (
+          <Grid item key={idx} md={12}>
+            <PlaceDetails place={place} id={place.id} />
+          </Grid>
+        ))}
       </Grid>
     </div>
   )

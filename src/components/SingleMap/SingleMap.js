@@ -18,7 +18,7 @@ const SingleMap = ({ lat, long }) => {
 
   if (singleMapPosition) {
     return (
-      <LoadScript googleMapsApiKey="AIzaSyCcqv4vOhtTLGBXOesBWoL243Y1-BYAkYY">
+      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
         <GoogleMap
           mapContainerStyle={{ width: "100%", height: "100%" }}
           center={{ lat: lat, lng: long }}

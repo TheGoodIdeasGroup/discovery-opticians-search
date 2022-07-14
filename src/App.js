@@ -19,6 +19,8 @@ import LocationView from "./screens/LocationView"
 //react-router-dom
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
+const libraries = ["places"]
+
 function App() {
   const [places, setPlaces] = useState([])
 
@@ -29,26 +31,26 @@ function App() {
   //APIs
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
-    libraries: ["places"],
+    libraries,
   })
 
   const options = {
     method: "GET",
     headers: {
       Accept: "application/json",
-      Authorization: "fsq3jw4csDhJqdPKbEm9+Fh0DeUFDLRXQApaFiA6kCNS6CE=",
+      Authorization: process.env.REACT_APP_FORESQUARE_API_KEY,
     },
   }
 
   //first page data for testing
   const getPlacesData = async () => {
     try {
-      fetch(
-        `https://api.foursquare.com/v3/places/search?query=opticians&ll=${latLng}&categories=17037%2C%2015024&sort=DISTANCE&limit=10`,
-        options
-      )
+      let FS_URL = `https://api.foursquare.com/v3/places/search?query=opticians&ll=${latLng}&categories=17037%2C%2015024&sort=DISTANCE&limit=10`
+      console.log(FS_URL)
+      fetch(FS_URL, options)
         .then((response) => response.json())
-        .then((response) => console.log(response))
+        .then((response) => setPlaces(response.results))
+        .then(console.log(places))
         .catch((err) => console.error(err))
     } catch (err) {
       console.log(err)
@@ -83,8 +85,6 @@ function App() {
               places={places}
               type={type}
               setType={setType}
-              // country={country}
-              // setCountry={setCountry}
               latLng={latLng}
               setLatLng={setLatLng}
             />
