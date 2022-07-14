@@ -25,6 +25,7 @@ export default function CardImage({ primary, secondary, name }) {
             height="300"
             image={item}
             alt={`name ${idx}`}
+            style={{ objectFit: "contain" }}
           ></CardMedia>
         ))}
       </Carousel>
@@ -37,6 +38,7 @@ export default function CardImage({ primary, secondary, name }) {
         height="300"
         image={usePhoto}
         alt={name}
+        style={{ objectFit: "contain" }}
       ></CardMedia>
     )
   }

@@ -28,21 +28,25 @@ const PlaceDetails = ({ place, refProp, selected }) => {
     // photos: { primary, secondary },
     name,
     categories,
-    location: { post_town, postcode, address },
+    location: { postcode, address },
     zipcode,
     fsq_id,
     tel,
     website,
+    photos,
   } = place
 
   return (
     <Card elevation={6} id={fsq_id}>
       <CardContent style={{ padding: 0, marginBottom: 20 }}>
-        {/* <CardImage
-          primary={`${prefix}${suffix}`}
-          secondary={secondary}
-          name={name}
-        /> */}
+        {/* {photos[0] && (
+          <CardImage
+            primary={`${photos[0].prefix}original${photos[0].suffix}`}
+            // secondary={secondary}
+            name={name}
+          />
+        )} */}
+
         <div
           style={{
             marginTop: 20,
