@@ -27,9 +27,6 @@ function App() {
   const [latLng, setLatLng] = useState("")
 
   //APIs
-  let radius = "5000"
-  // const API_CALL = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=opticians%20near%20${postcode}&type=health&radius=${radius}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
-
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
     libraries: ["places"],
