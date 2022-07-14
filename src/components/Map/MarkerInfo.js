@@ -6,7 +6,6 @@ import CustomInfoWindow from "./CustomInfoWindow"
 
 export default function MarkerInfo({
   place,
-  position,
   clusterer,
   setChildClicked,
   childClicked,
@@ -17,22 +16,27 @@ export default function MarkerInfo({
     return location.lat + location.long
   }
 
-  const latLng = { lat: Number(place.lat), lng: Number(place.long) }
+  const placeLat = place.geocodes.main.latitude
+  const placeLong = place.geocodes.main.longitude
+  const placeLatLng = { lat: placeLat, lng: placeLong }
+
+  const { name, fsq_id } = place
 
   const options = {
     imagePath:
-      "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m1.png", // so you must have m1.png, m2.png, m3.png, m4.png, m5.png and m6.png in that folder
+      "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m", // so you must have m1.png, m2.png, m3.png, m4.png, m5.png and m6.png in that folder
   }
 
   const handleClickedMarker = (place) => {
     setChildClicked({
-      id: place.id,
-      name: place.name,
-      lat: place.lat,
-      lng: place.long,
+      id: fsq_id,
+      name: name,
+      lat: placeLat,
+      lng: placeLong,
     })
     setInfoOpen(true)
   }
+  console.log(placeLatLng)
 
   return (
     <>
@@ -40,10 +44,12 @@ export default function MarkerInfo({
         options={options}
         onClick={() => handleClickedMarker(place)}
         key={createKey(place)}
-        position={latLng}
+        position={placeLatLng}
         clusterer={clusterer}
       />
-      {infoOpen && <CustomInfoWindow name={place.name} position={latLng} />}
+      {infoOpen && (
+        <CustomInfoWindow name={place.name} position={placeLatLng} />
+      )}
     </>
   )
 }

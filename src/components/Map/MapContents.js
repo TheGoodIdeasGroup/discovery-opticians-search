@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 // import MarkerInfo from "./MarkerInfo"
 
-import CustomInfoWindow from "./CustomInfoWindow"
 import MarkerInfo from "./MarkerInfo"
 
-import { Marker, MarkerClusterer } from "@react-google-maps/api"
+import { MarkerClusterer } from "@react-google-maps/api"
 
 const MapContents = ({
   places,
-  country,
-  type,
+
   childClicked,
   setChildClicked,
 }) => {
@@ -23,24 +21,18 @@ const MapContents = ({
   return (
     <MarkerClusterer options={options}>
       {(clusterer) =>
-        places
-          ?.filter(
-            (place) =>
-              (!country || place.country.includes(country)) &&
-              (!type || place.categories.includes(type))
+        places?.map((place, idx) => {
+          // console.log({ place, idx })
+          return (
+            <MarkerInfo
+              key={idx}
+              place={place}
+              clusterer={clusterer}
+              setChildClicked={setChildClicked}
+              childClicked={childClicked}
+            />
           )
-          .map((place, idx) => {
-            return (
-              <>
-                <MarkerInfo
-                  place={place}
-                  clusterer={clusterer}
-                  setChildClicked={setChildClicked}
-                  childClicked={childClicked}
-                />
-              </>
-            )
-          })
+        })
       }
     </MarkerClusterer>
   )

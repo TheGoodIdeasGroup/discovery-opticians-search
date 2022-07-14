@@ -42,10 +42,13 @@ function App() {
     },
   }
 
+  const fields =
+    "fsq_id%2Cname%2Ccategories%2Cdistance%2Cgeocodes%2Clocation%2Cphotos%2Cdescription%2Ctel%2Cemail%2Cwebsite%2Csocial_media%2Chours"
+
   //first page data for testing
   const getPlacesData = async () => {
     try {
-      let FS_URL = `https://api.foursquare.com/v3/places/search?query=opticians&ll=${latLng}&categories=17037%2C%2015024&sort=DISTANCE&limit=10`
+      let FS_URL = `https://api.foursquare.com/v3/places/search?query=opticians&ll=${latLng}&categories=17037%2C%2015024&sort=DISTANCE&limit=10&fields=${fields}`
       console.log(FS_URL)
       fetch(FS_URL, options)
         .then((response) => response.json())

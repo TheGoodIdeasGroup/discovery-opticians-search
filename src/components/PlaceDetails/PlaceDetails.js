@@ -12,6 +12,7 @@ import {
 
 import LocationOnIcon from "@material-ui/icons/LocationOn"
 import PhoneIcon from "@material-ui/icons/Phone"
+import WebIcon from "@mui/icons-material/Web"
 
 import CardImage from "./CardImage"
 
@@ -27,16 +28,21 @@ const PlaceDetails = ({ place, refProp, selected }) => {
     // photos: { primary, secondary },
     name,
     categories,
-    post_town,
-    location,
+    location: { post_town, postcode, address },
     zipcode,
     fsq_id,
+    tel,
+    website,
   } = place
 
   return (
     <Card elevation={6} id={fsq_id}>
       <CardContent style={{ padding: 0, marginBottom: 20 }}>
-        {/* <CardImage primary={primary} secondary={secondary} name={name} /> */}
+        {/* <CardImage
+          primary={`${prefix}${suffix}`}
+          secondary={secondary}
+          name={name}
+        /> */}
         <div
           style={{
             marginTop: 20,
@@ -49,47 +55,71 @@ const PlaceDetails = ({ place, refProp, selected }) => {
           <Typography gutterBottom variant={"h5"}>
             {name}
           </Typography>
-          {post_town && (
-            <Box display="flex" justifyContent="space-between">
-              <Typography variant="subtitle1">City</Typography>
-              <Typography gutterBottom variant="subtitle1">
+          {/* {post_town && ( */}
+          {/* <Box display="flex" justifyContent="space-between"> */}
+          {/* <Typography variant="subtitle1">City</Typography> */}
+          {/* <Typography gutterBottom variant="subtitle1">
                 {post_town}
-              </Typography>
-            </Box>
-          )}
-          {location && (
+              </Typography> */}
+          {/* </Box> */}
+          {/* )} */}
+          {address && (
             <Box
-              display="flex"
-              style={{ marginBottom: 10 }}
-              justifyContent="flex-start"
+              style={{
+                marginBottom: 10,
+                display: "flex",
+                justifyContent: "flex-start",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
             >
               <LocationOnIcon />
               <Typography
-                gutterBottom
                 variant="subtitle2"
-                style={{ marginLeft: 10 }}
+                style={{ marginLeft: 10, display: "inline-flex" }}
               >
-                {location.postcode}, {location.address} {zipcode}
+                {postcode}, {address} {zipcode}
               </Typography>
             </Box>
           )}
-          {/* {phone_numbers && (
+          {tel && (
             <Box
-              display="flex"
-              style={{ marginBottom: 10 }}
-              justifyContent="flex-start"
+              style={{
+                marginBottom: 10,
+                display: "flex",
+                justifyContent: "flex-start",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
             >
               <PhoneIcon />
               <Typography
-                style={{ marginLeft: 10 }}
-                gutterBottom
+                style={{ marginLeft: 10, display: "inline-flex" }}
                 variant="subtitle2"
               >
-                {phone_numbers &&
-                  phone_numbers.map((num) => <span>{num}</span>)}
+                {tel}
               </Typography>
             </Box>
-          )} */}
+          )}
+          {website && (
+            <Box
+              style={{
+                marginBottom: 10,
+                display: "flex",
+                justifyContent: "flex-start",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <WebIcon />
+              <Typography
+                style={{ marginLeft: 10, display: "inline-flex" }}
+                variant="subtitle2"
+              >
+                {website}
+              </Typography>
+            </Box>
+          )}
           {/* <Box display="flex">
             <Typography variant="h6">Services</Typography>
           </Box>

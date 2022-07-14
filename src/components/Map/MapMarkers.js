@@ -16,16 +16,15 @@ export default function MapMarkers({
 }) {
   return (
     <>
-      {filterByCountry && (
-        <MapContents
-          places={places}
-          filterByCountry={filterByCountry}
-          country={country}
-          type={type}
-          childClicked={childClicked}
-          setChildClicked={setChildClicked}
-        />
-      )}
+      <MapContents
+        places={places}
+        filterByCountry={filterByCountry}
+        country={country}
+        type={type}
+        childClicked={childClicked}
+        setChildClicked={setChildClicked}
+      />
+
       {userLocationGranted && (
         <Marker
           width="30"

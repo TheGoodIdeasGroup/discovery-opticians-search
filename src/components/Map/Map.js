@@ -22,7 +22,7 @@ const Map = ({ places, country, type, childClicked, setChildClicked }) => {
 
   return (
     <GoogleMap
-      mapContainerStyle={{ width: "100vw", height: "100%" }}
+      mapContainerStyle={{ width: "100%", height: "100%" }}
       center={center}
       zoom={12}
       onLoad={() => console.log(center)}

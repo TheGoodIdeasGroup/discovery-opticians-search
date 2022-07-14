@@ -95,6 +95,7 @@ const List = ({
       )} */}
 
       <Combobox
+        style={{ marginBottom: 20 }}
         onSelect={async (address) => {
           try {
             const geocodes = await getGeocode({ address })
