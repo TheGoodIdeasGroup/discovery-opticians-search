@@ -8,28 +8,46 @@ import PlaceDetails from "../PlaceDetails/PlaceDetails"
 import {
   Grid,
   Typography,
-  InputLabel,
-  MenuItem,
+  // InputLabel,
   FormControl,
-  Select,
+  TextField,
+  Button,
 } from "@material-ui/core"
 
+//**move later
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete"
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopover,
+  ComboboxList,
+  ComboboxOption,
+} from "@reach/combobox"
+
+import "@reach/combobox/styles.css"
+
 //data
-import countries from "../../countries"
-import services from "../../services"
+// import countries from "../../countries"
+// import services from "../../services"
 
 const List = ({
   places,
   type,
   setType,
   country,
-  setCountry,
+  // setCountry,
   childClicked,
-  setChildClicked,
+  // setChildClicked,
+  latLng,
+  setLatLng,
 }) => {
   const classes = useStyles()
 
   const [elRefs, setElRefs] = useState([])
+  const [userInputPostcode, setUserInputPostcode] = useState("")
 
   useEffect(() => {
     console.log(childClicked)
@@ -54,31 +72,24 @@ const List = ({
     }
   }
 
-  //select dropdowns
-  const [countryName, setCountryName] = useState()
-  const [serviceName, setServiceName] = useState()
-
-  const handleCountryChange = (e) => {
-    setCountry(e.target.value)
-
-    let theCountry = countries.filter((c) => c.key === e.target.value)
-    setCountryName(theCountry[0].name)
-  }
-
-  const handleServiceChange = (e) => {
-    setType(e.target.value)
-
-    let theService = services.filter((s) => s.key === e.target.value)
-    setServiceName(theService[0].name)
-  }
-
   let markerCount = 0
+
+  const {
+    ready,
+    value,
+    suggestions: { status, data },
+    setValue,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      country: "uk",
+    },
+  })
 
   return (
     <div className={classes.container}>
-      <Typography variant={"h4"}>Unilabs Locations</Typography>
-      <Typography variant={"h6"}>Select your country to begin</Typography>
-      {countryName && (
+      <Typography variant={"h4"}>Optician Search</Typography>
+      <Typography variant={"h6"}>Search by postcode</Typography>
+      {/* {countryName && (
         <Typography gutterBottom variant="body1">
           {country &&
             places
@@ -89,52 +100,62 @@ const List = ({
               )
               .map((place) => {
                 markerCount++
+                return null
               })}
-          {markerCount} locations in {countryName}{" "}
-          {serviceName && `offering ${serviceName}`}
+          {markerCount} opticians near {postcode}
         </Typography>
-      )}
+      )} */}
 
-      <FormControl className={classes.formControl}>
-        <InputLabel>Country</InputLabel>
-        <Select
-          value={country}
+      {/* <FormControl className={classes.formControl}>
+        <TextField
+          value={userInputPostcode}
           onChange={(e) => {
-            handleCountryChange(e)
+            console.log(e.target.value)
+
+            setUserInputPostcode(e.target.value)
           }}
+          label="Postcode"
+          variant="standard"
+        />
+        <Button
+          onClick={() => {
+            setPostcode(userInputPostcode)
+            console.log(`postcode set to ${postcode}`)
+          }}
+          variant="contained"
+          color="primary"
         >
-          <MenuItem key={"all"} value={"all"}>
-            All
-          </MenuItem>
-          {countries &&
-            countries.map((country) => (
-              <MenuItem key={country.key} value={country.key}>
-                {country.name}
-              </MenuItem>
-            ))}
-        </Select>
-      </FormControl>
-      {country && (
-        <FormControl className={classes.formControl}>
-          <InputLabel>Type</InputLabel>
-          <Select
-            value={type}
-            onChange={(e) => {
-              handleServiceChange(e)
-            }}
-          >
-            <MenuItem key={"all"} value={""}>
-              All
-            </MenuItem>
-            {services &&
-              services.map((service, idx) => (
-                <MenuItem key={idx} value={service.key}>
-                  {service.name}
-                </MenuItem>
+          Submit
+        </Button>
+      </FormControl> */}
+      <Combobox
+        onSelect={async (address) => {
+          try {
+            const geocodes = await getGeocode({ address })
+            const { lat, lng } = getLatLng(geocodes[0])
+            console.log(address)
+            console.log({ lat, lng })
+            setLatLng(`${lat},${lng}`)
+          } catch (err) {
+            console.log(err)
+          }
+        }}
+        aria-labelledby="demo"
+      >
+        <ComboboxInput
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          disabled={!ready}
+        />
+        <ComboboxPopover>
+          <ComboboxList>
+            {status === "OK" &&
+              data.map(({ place_id, description }) => (
+                <ComboboxOption key={place_id} value={description} />
               ))}
-          </Select>
-        </FormControl>
-      )}
+          </ComboboxList>
+        </ComboboxPopover>
+      </Combobox>
 
       <Grid container spacing={3} className={classes.list}>
         {country &&
@@ -142,8 +163,8 @@ const List = ({
             ?.filter(
               (place) =>
                 //  place.country.includes(country)
-                (!country || place.country.includes(country)) &&
-                (!type || place.categories.includes(type))
+                !country || place.country.includes(country)
+              // && (!type || place.categories.includes(type))
             )
             .map((place, idx) => (
               <Grid item key={idx} md={12}>

@@ -7,7 +7,15 @@ import { Grid } from "@material-ui/core"
 import List from "../components/List/List"
 import Map from "../components/Map/Map"
 
-const MapView = ({ places, country, setCountry, type, setType }) => {
+const MapView = ({
+  places,
+  country,
+  setCountry,
+  type,
+  setType,
+  latLng,
+  setLatLng,
+}) => {
   const [userLocation, setUserLocation] = useState({ lat: 0, lng: 0 })
   const [userLocationGranted, setUserLocationGranted] = useState(false)
 
@@ -29,6 +37,8 @@ const MapView = ({ places, country, setCountry, type, setType }) => {
     <Grid container spacing={0} style={{ width: "100%" }}>
       <Grid item sm={12} md={5} order={{ sm: 12, md: 1 }}>
         <List
+          latLng={latLng}
+          setLatLng={setLatLng}
           places={places}
           type={type}
           setType={setType}
