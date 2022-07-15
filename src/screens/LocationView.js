@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react"
 
-import axios from "axios"
-
 //react-router-dom
 import { useParams } from "react-router-dom"
 
@@ -16,13 +14,28 @@ import OpeningHours from "../components/PlaceDetails/OpeningHours"
 const LocationView = () => {
   const { id } = useParams()
 
-  const API_CALL = `https://corsanywhere.herokuapp.com/${process.env.REACT_APP_PARTOO_URL}/${id}?api_key=${process.env.REACT_APP_PARTOO_API}`
+  const options = {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: process.env.REACT_APP_FORESQUARE_API_KEY,
+    },
+  }
+
+  const fields =
+    "fsq_id%2Cname%2Ccategories%2Cdistance%2Cgeocodes%2Clocation%2Cphotos%2Cdescription%2Ctel%2Cemail%2Cwebsite%2Csocial_media%2Chours"
+
+  const API_CALL = `https://api.foursquare.com/v3/places/${id}?fields=${fields}`
 
   const [place, setPlace] = useState({})
 
   const getPlace = async () => {
     try {
-      await axios.get(API_CALL).then((res) => setPlace(res.data))
+      console.log(API_CALL)
+      fetch(API_CALL, options)
+        .then((res) => res.json())
+        .then((res) => setPlace(res.results))
+        .catch((err) => console.error(err))
     } catch (err) {
       console.log(err)
     }
@@ -32,18 +45,20 @@ const LocationView = () => {
     getPlace()
   }, [])
 
+  useEffect(() => {
+    console.log("place is:")
+    console.log(place)
+  }, [place])
+
   if (place) {
     const {
       contacts,
       description_long,
       categories,
       name,
-      zipcode,
-      city,
-      address,
-      open_hours,
-      lat,
-      long,
+      location,
+      hours,
+      geocodes,
     } = place
 
     return (
@@ -73,33 +88,36 @@ const LocationView = () => {
                 justifyContent: "space-between",
               }}
             >
-              <Typography variant="h5" gutterBottom>
-                {address}, {city}, {zipcode}
-              </Typography>
-              <Typography variant="h5">
-                {place.status === "open" ? (
-                  <span style={{ color: "green" }}>Open</span>
+              {/* {location.formatted_address && (
+                <Typography variant="h5" gutterBottom>
+                  {location.formatted_address}
+                </Typography>
+              )} */}
+
+              {/* <Typography variant="h5">
+                {hours.open_now === true ? (
+                  <span style={{ color: "green" }}>Open Now</span>
                 ) : (
-                  <span style={{ color: "red" }}>Closed</span>
+                  <span style={{ color: "red" }}>Closed Now</span>
                 )}
-              </Typography>
+              </Typography> */}
             </Box>
-            <Grid container alignItems="center">
+            {/* <Grid container alignItems="center">
               <Grid item xs={12} md={8} alignItems="flex-end">
                 <ContactDetails
                   contacts={contacts}
                   website_url={place.website_url}
                 />
               </Grid>
-            </Grid>
-            {description_long && (
+            </Grid> */}
+            {/* {description_long && (
               <Box style={{ padding: 20 }}>
                 <Typography variant="h5" gutterBottom>
                   Description
                 </Typography>
                 <Typography variant="body1">{description_long}</Typography>
               </Box>
-            )}
+            )} */}
 
             {categories && (
               <Box style={{ padding: 20 }}>
@@ -109,9 +127,7 @@ const LocationView = () => {
 
                 {categories
                   ?.sort((a, b) => a.localeCompare(b))
-                  .map((service) => {
-                    let theService = service.replace("gcid:", "")
-                    let theServiceTitle = theService.replaceAll("_", " ")
+                  .map((cat) => {
                     return (
                       <Chip
                         style={{
@@ -119,26 +135,30 @@ const LocationView = () => {
                           margin: 5,
                           marginLeft: 0,
                         }}
-                        key={theService}
+                        key={cat.id}
                         size="small"
-                        label={theServiceTitle}
+                        label={cat.name}
                       />
                     )
                   })}
               </Box>
             )}
           </Box>
-          {open_hours && (
+          {/* {hours.regular && (
             <Box padding={2}>
               <Typography variant="h5" gutterBottom>
                 Opening Hours
               </Typography>
-              <OpeningHours open_hours={open_hours} />
+              <OpeningHours open_hours={hours.regular} />
             </Box>
-          )}
+          )} */}
         </Grid>
         <Grid item xs={12} md={6} style={{ height: "100%", width: "100%" }}>
-          <SingleMap place={place} lat={lat} long={long} />
+          {/* <SingleMap
+            place={place}
+            lat={geocodes.main.latitude}
+            long={geocodes.main.longitude}
+          /> */}
         </Grid>
       </Grid>
     )

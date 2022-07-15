@@ -27,11 +27,11 @@ const Header = () => {
     <AppBar position="static">
       <Toolbar className={classes.toolbar}>
         <Typography variant="h5" className={classes.title}>
-          Unilabs Locations
+          Opticians Search
         </Typography>
         <Box display="flex">
           <Typography variant="h6" className={classes.title}>
-            Explore new locations
+            Find Optometrists and Eye Care stores in your area
           </Typography>
         </Box>
       </Toolbar>

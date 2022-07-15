@@ -60,10 +60,10 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    console.log("places are:")
-    console.log(places)
-  }, [places])
+  // useEffect(() => {
+  //   console.log("places are:")
+  //   console.log(places)
+  // }, [places])
 
   useEffect(() => {
     if (latLng) {
