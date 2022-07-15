@@ -76,7 +76,9 @@ const List = ({
   return (
     <div className={classes.container}>
       <Typography variant={"h4"}>Optician Search</Typography>
-      <Typography variant={"h6"}>Search by postcode</Typography>
+      <Typography variant={"h6"}>
+        Search by postcode, town, or address
+      </Typography>
       {/* {countryName && (
         <Typography gutterBottom variant="body1">
           {country &&
