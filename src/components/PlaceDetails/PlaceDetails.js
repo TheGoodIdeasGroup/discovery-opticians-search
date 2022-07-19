@@ -13,6 +13,8 @@ import {
 import LocationOnIcon from "@material-ui/icons/LocationOn"
 import PhoneIcon from "@material-ui/icons/Phone"
 import WebIcon from "@mui/icons-material/Web"
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom"
+import NoMeetingRoomIcon from "@mui/icons-material/NoMeetingRoom"
 
 import CardImage from "./CardImage"
 
@@ -28,12 +30,12 @@ const PlaceDetails = ({ place, refProp, selected }) => {
     // photos: { primary, secondary },
     name,
     categories,
-    location: { postcode, address },
-    zipcode,
+    location: { formatted_address },
     fsq_id,
     tel,
     website,
     photos,
+    hours: { open_now },
   } = place
 
   return (
@@ -67,7 +69,7 @@ const PlaceDetails = ({ place, refProp, selected }) => {
               </Typography> */}
           {/* </Box> */}
           {/* )} */}
-          {address && (
+          {formatted_address && (
             <Box
               style={{
                 marginBottom: 10,
@@ -82,7 +84,7 @@ const PlaceDetails = ({ place, refProp, selected }) => {
                 variant="subtitle2"
                 style={{ marginLeft: 10, display: "inline-flex" }}
               >
-                {postcode}, {address} {zipcode}
+                {formatted_address}
               </Typography>
             </Box>
           )}
@@ -124,6 +126,24 @@ const PlaceDetails = ({ place, refProp, selected }) => {
               </Typography>
             </Box>
           )}
+          <Box
+            style={{
+              marginBottom: 10,
+              display: "flex",
+              justifyContent: "flex-start",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            {open_now ? <MeetingRoomIcon /> : <NoMeetingRoomIcon />}
+            <Typography
+              style={{ marginLeft: 10, display: "inline-flex" }}
+              variant="subtitle2"
+            >
+              {open_now ? "Open Now" : "Closed Now"}
+            </Typography>
+          </Box>
+
           {/* <Box display="flex">
             <Typography variant="h6">Services</Typography>
           </Box>
@@ -146,21 +166,19 @@ const PlaceDetails = ({ place, refProp, selected }) => {
           </Box> */}
         </div>
         <CardActions>
-          <Button
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              justifyContent: "center",
-            }}
-            size="small"
-            color="primary"
-            component={Link}
-            to={{
-              pathname: `/location/${fsq_id}`,
-            }}
-          >
-            View Location
-          </Button>
+          <Link to={{ pathname: `/location/${fsq_id}` }}>
+            <Button
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                justifyContent: "center",
+              }}
+              size="small"
+              color="primary"
+            >
+              View Location
+            </Button>
+          </Link>
         </CardActions>
       </CardContent>
     </Card>

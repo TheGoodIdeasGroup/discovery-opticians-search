@@ -8,6 +8,7 @@ import { Grid, Box, Typography, Chip } from "@material-ui/core"
 import SingleMap from "../components/SingleMap/SingleMap"
 import ContactDetails from "../components/PlaceDetails/ContactDetails"
 import OpeningHours from "../components/PlaceDetails/OpeningHours"
+import { getByPlaceholderText } from "@testing-library/react"
 
 // import { DistanceMatrixService } from "@react-google-maps/api"
 
@@ -22,19 +23,20 @@ const LocationView = () => {
     },
   }
 
-  const fields =
-    "fsq_id%2Cname%2Ccategories%2Cdistance%2Cgeocodes%2Clocation%2Cphotos%2Cdescription%2Ctel%2Cemail%2Cwebsite%2Csocial_media%2Chours"
-
-  const API_CALL = `https://api.foursquare.com/v3/places/${id}?fields=${fields}`
-
   const [place, setPlace] = useState({})
 
   const getPlace = async () => {
+    const fields =
+      "fsq_id%2Cname%2Ccategories%2Cdistance%2Cgeocodes%2Clocation%2Cphotos%2Cdescription%2Ctel%2Cemail%2Cwebsite%2Csocial_media%2Chours"
+
+    const API_CALL = `https://api.foursquare.com/v3/places/${id}?fields=${fields}`
+
     try {
+      console.log(id)
       console.log(API_CALL)
       fetch(API_CALL, options)
         .then((res) => res.json())
-        .then((res) => setPlace(res.results))
+        .then((res) => setPlace(res))
         .catch((err) => console.error(err))
     } catch (err) {
       console.log(err)
@@ -45,11 +47,6 @@ const LocationView = () => {
     getPlace()
   }, [])
 
-  useEffect(() => {
-    console.log("place is:")
-    console.log(place)
-  }, [place])
-
   if (place) {
     const {
       contacts,
@@ -57,8 +54,11 @@ const LocationView = () => {
       categories,
       name,
       location,
-      hours,
       geocodes,
+      tel,
+      website,
+      social_media,
+      hours,
     } = place
 
     return (
@@ -88,11 +88,11 @@ const LocationView = () => {
                 justifyContent: "space-between",
               }}
             >
-              {/* {location.formatted_address && (
+              {location.formatted_address && (
                 <Typography variant="h5" gutterBottom>
                   {location.formatted_address}
                 </Typography>
-              )} */}
+              )}
 
               {/* <Typography variant="h5">
                 {hours.open_now === true ? (
@@ -102,14 +102,15 @@ const LocationView = () => {
                 )}
               </Typography> */}
             </Box>
-            {/* <Grid container alignItems="center">
+            <Grid container alignItems="center">
               <Grid item xs={12} md={8} alignItems="flex-end">
                 <ContactDetails
-                  contacts={contacts}
-                  website_url={place.website_url}
+                  tel={tel}
+                  website={website}
+                  social_media={social_media}
                 />
               </Grid>
-            </Grid> */}
+            </Grid>
             {/* {description_long && (
               <Box style={{ padding: 20 }}>
                 <Typography variant="h5" gutterBottom>
@@ -126,7 +127,7 @@ const LocationView = () => {
                 </Typography>
 
                 {categories
-                  ?.sort((a, b) => a.localeCompare(b))
+                  // ?.sort((a, b) => a.localeCompare(b))
                   .map((cat) => {
                     return (
                       <Chip
@@ -144,22 +145,24 @@ const LocationView = () => {
               </Box>
             )}
           </Box>
-          {/* {hours.regular && (
+          {hours && (
             <Box padding={2}>
               <Typography variant="h5" gutterBottom>
                 Opening Hours
               </Typography>
-              <OpeningHours open_hours={hours.regular} />
+              <OpeningHours open_hours={hours} />
             </Box>
-          )} */}
+          )}
         </Grid>
-        <Grid item xs={12} md={6} style={{ height: "100%", width: "100%" }}>
-          {/* <SingleMap
-            place={place}
-            lat={geocodes.main.latitude}
-            long={geocodes.main.longitude}
-          /> */}
-        </Grid>
+        {geocodes && (
+          <Grid item xs={12} md={6} style={{ height: "100%", width: "100%" }}>
+            <SingleMap
+              place={place}
+              lat={geocodes.roof.latitude}
+              long={geocodes.roof.longitude}
+            />
+          </Grid>
+        )}
       </Grid>
     )
   } else {
