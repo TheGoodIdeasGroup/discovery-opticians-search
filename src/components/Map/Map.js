@@ -4,8 +4,15 @@ import { GoogleMap } from "@react-google-maps/api"
 
 import MapMarkers from "./MapMarkers"
 
-const Map = ({ places, country, type, childClicked, setChildClicked }) => {
-  const [center, setCenter] = useState({ lat: 51.44985, lng: -0.00395 })
+const Map = ({
+  places,
+  country,
+  type,
+  childClicked,
+  setChildClicked,
+  center,
+  setCenter,
+}) => {
   const [userLocationGranted, setUserLocationGranted] = useState(false)
 
   useEffect(() => {
@@ -26,6 +33,7 @@ const Map = ({ places, country, type, childClicked, setChildClicked }) => {
       center={center}
       zoom={12}
       onLoad={() => console.log(center)}
+      options={{ styles: mapStyles }}
     >
       <MapMarkers
         childClicked={childClicked}
@@ -40,4 +48,8 @@ const Map = ({ places, country, type, childClicked, setChildClicked }) => {
     </GoogleMap>
   )
 }
+
+const mapStyles = null
+//mapstyles go here
+
 export default Map

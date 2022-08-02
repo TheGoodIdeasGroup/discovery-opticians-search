@@ -8,9 +8,7 @@ import { Grid, Box, Typography, Chip } from "@material-ui/core"
 import SingleMap from "../components/SingleMap/SingleMap"
 import ContactDetails from "../components/PlaceDetails/ContactDetails"
 import OpeningHours from "../components/PlaceDetails/OpeningHours"
-import { getByPlaceholderText } from "@testing-library/react"
-
-// import { DistanceMatrixService } from "@react-google-maps/api"
+import CircularProgress from "@mui/material/CircularProgress"
 
 const LocationView = () => {
   const { id } = useParams()
@@ -24,19 +22,20 @@ const LocationView = () => {
   }
 
   const [place, setPlace] = useState({})
+  const [userLocation, setUserLocation] = useState({ lat: 0, lng: 0 })
+  const [userLocationGranted, setUserLocationGranted] = useState(false)
 
   const getPlace = async () => {
     const fields =
       "fsq_id%2Cname%2Ccategories%2Cdistance%2Cgeocodes%2Clocation%2Cphotos%2Cdescription%2Ctel%2Cemail%2Cwebsite%2Csocial_media%2Chours"
-
     const API_CALL = `https://api.foursquare.com/v3/places/${id}?fields=${fields}`
-
     try {
       console.log(id)
       console.log(API_CALL)
       fetch(API_CALL, options)
         .then((res) => res.json())
         .then((res) => setPlace(res))
+        .then(console.log(place))
         .catch((err) => console.error(err))
     } catch (err) {
       console.log(err)
@@ -44,13 +43,21 @@ const LocationView = () => {
   }
 
   useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setUserLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        })
+        setUserLocationGranted(true)
+      })
+    }
+
     getPlace()
   }, [])
 
-  if (place) {
+  if (place.name) {
     const {
-      contacts,
-      description_long,
       categories,
       name,
       location,
@@ -61,13 +68,15 @@ const LocationView = () => {
       hours,
     } = place
 
+    const lat = geocodes.main.latitude
+      ? geocodes.main.latitude
+      : geocodes.roof.latitude
+    const long = geocodes.main.longitude
+      ? geocodes.main.longitude
+      : geocodes.roof.longitude
+
     return (
-      <Grid
-        container
-        spacing={3}
-        alignItems="flex-start"
-        style={{ height: "calc(100vh - 64px)", width: "100%" }}
-      >
+      <Grid container style={{ height: "calc(100vh - 64px)", width: "100%" }}>
         <Grid item xs={12} md={6}>
           <Box>
             <Typography
@@ -93,15 +102,29 @@ const LocationView = () => {
                   {location.formatted_address}
                 </Typography>
               )}
-
-              {/* <Typography variant="h5">
-                {hours.open_now === true ? (
-                  <span style={{ color: "green" }}>Open Now</span>
-                ) : (
-                  <span style={{ color: "red" }}>Closed Now</span>
-                )}
-              </Typography> */}
             </Box>
+
+            <Box
+              style={{
+                paddingLeft: 20,
+                paddingRight: 20,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "flex-start",
+                justifyContent: "space-between",
+              }}
+            >
+              {hours.open_now && (
+                <Typography variant="h5">
+                  {hours.open_now === true ? (
+                    <span style={{ color: "green" }}>Open Now</span>
+                  ) : (
+                    <span style={{ color: "red" }}>Closed Now</span>
+                  )}
+                </Typography>
+              )}
+            </Box>
+
             <Grid container alignItems="center">
               <Grid item xs={12} md={8} alignItems="flex-end">
                 <ContactDetails
@@ -111,14 +134,6 @@ const LocationView = () => {
                 />
               </Grid>
             </Grid>
-            {/* {description_long && (
-              <Box style={{ padding: 20 }}>
-                <Typography variant="h5" gutterBottom>
-                  Description
-                </Typography>
-                <Typography variant="body1">{description_long}</Typography>
-              </Box>
-            )} */}
 
             {categories && (
               <Box style={{ padding: 20 }}>
@@ -126,22 +141,20 @@ const LocationView = () => {
                   Services
                 </Typography>
 
-                {categories
-                  // ?.sort((a, b) => a.localeCompare(b))
-                  .map((cat) => {
-                    return (
-                      <Chip
-                        style={{
-                          textTransform: "capitalize",
-                          margin: 5,
-                          marginLeft: 0,
-                        }}
-                        key={cat.id}
-                        size="small"
-                        label={cat.name}
-                      />
-                    )
-                  })}
+                {categories.map((cat) => {
+                  return (
+                    <Chip
+                      style={{
+                        textTransform: "capitalize",
+                        margin: 5,
+                        marginLeft: 0,
+                      }}
+                      key={cat.id}
+                      size="small"
+                      label={cat.name}
+                    />
+                  )
+                })}
               </Box>
             )}
           </Box>
@@ -158,15 +171,28 @@ const LocationView = () => {
           <Grid item xs={12} md={6} style={{ height: "100%", width: "100%" }}>
             <SingleMap
               place={place}
-              lat={geocodes.roof.latitude}
-              long={geocodes.roof.longitude}
+              lat={lat}
+              long={long}
+              userLocationGranted={userLocationGranted}
+              userLocation={userLocation}
             />
           </Grid>
         )}
       </Grid>
     )
   } else {
-    return <h1>No place found</h1>
+    return (
+      <Box
+        sx={{
+          height: "calc(100vh - 64px)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    )
   }
 }
 export default LocationView

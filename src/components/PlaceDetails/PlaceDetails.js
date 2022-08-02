@@ -39,16 +39,8 @@ const PlaceDetails = ({ place, refProp, selected }) => {
   } = place
 
   return (
-    <Card elevation={6} id={fsq_id}>
-      <CardContent style={{ padding: 0, marginBottom: 20 }}>
-        {/* {photos[0] && (
-          <CardImage
-            primary={`${photos[0].prefix}original${photos[0].suffix}`}
-            // secondary={secondary}
-            name={name}
-          />
-        )} */}
-
+    <Card elevation={6} id={fsq_id} style={{ height: "100%", width: "100%" }}>
+      <CardContent style={{ padding: 0, marginBottom: 20, width: "100%" }}>
         <div
           style={{
             marginTop: 20,
@@ -61,14 +53,6 @@ const PlaceDetails = ({ place, refProp, selected }) => {
           <Typography gutterBottom variant={"h5"}>
             {name}
           </Typography>
-          {/* {post_town && ( */}
-          {/* <Box display="flex" justifyContent="space-between"> */}
-          {/* <Typography variant="subtitle1">City</Typography> */}
-          {/* <Typography gutterBottom variant="subtitle1">
-                {post_town}
-              </Typography> */}
-          {/* </Box> */}
-          {/* )} */}
           {formatted_address && (
             <Box
               style={{

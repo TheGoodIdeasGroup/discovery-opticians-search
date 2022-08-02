@@ -69,6 +69,7 @@ function App() {
     if (latLng) {
       console.log(`postcode is ${latLng}`)
       getPlacesData()
+      console.log(places)
     }
   }, [latLng])
 

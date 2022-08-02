@@ -20,6 +20,7 @@ const MapView = ({
   const [userLocationGranted, setUserLocationGranted] = useState(false)
 
   const [childClicked, setChildClicked] = useState({})
+  const [center, setCenter] = useState({ lat: 51.44985, lng: -0.00395 })
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -37,6 +38,8 @@ const MapView = ({
     <Grid container spacing={0} style={{ width: "100%" }}>
       <Grid item sm={12} md={5} order={{ sm: 12, md: 1 }}>
         <List
+          center={center}
+          setCenter={setCenter}
           latLng={latLng}
           setLatLng={setLatLng}
           places={places}
@@ -59,6 +62,8 @@ const MapView = ({
           setType={setType}
           childClicked={childClicked}
           setChildClicked={setChildClicked}
+          center={center}
+          setCenter={setCenter}
         />
       </Grid>
     </Grid>

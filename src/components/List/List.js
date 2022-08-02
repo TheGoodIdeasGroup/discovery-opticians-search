@@ -30,6 +30,8 @@ const List = ({
   childClicked,
   latLng,
   setLatLng,
+  center,
+  setCenter,
 }) => {
   const classes = useStyles()
 
@@ -76,26 +78,9 @@ const List = ({
   return (
     <div className={classes.container}>
       <Typography variant={"h4"}>Optician Search</Typography>
-      <Typography variant={"h6"}>
+      <Typography variant={"h6"} gutterBottom>
         Search by postcode, town, or address
       </Typography>
-      {/* {countryName && (
-        <Typography gutterBottom variant="body1">
-          {country &&
-            places
-              ?.filter(
-                (place) =>
-                  (!country || place.country.includes(country)) &&
-                  (!type || place.categories.includes(type))
-              )
-              .map((place) => {
-                markerCount++
-                return null
-              })}
-          {markerCount} opticians near {postcode}
-        </Typography>
-      )} */}
-
       <Combobox
         style={{ marginBottom: 20 }}
         onSelect={async (address) => {
@@ -105,6 +90,7 @@ const List = ({
             console.log(address)
             console.log({ lat, lng })
             setLatLng(`${lat},${lng}`)
+            setCenter({ lat: lat, lng: lng })
           } catch (err) {
             console.log(err)
           }
@@ -128,7 +114,7 @@ const List = ({
 
       <Grid container spacing={3} className={classes.list}>
         {places?.map((place, idx) => (
-          <Grid item key={idx} md={12}>
+          <Grid item key={idx} md={12} sm={6} xs={12} justifyContent="stretch">
             <PlaceDetails place={place} id={place.id} />
           </Grid>
         ))}
