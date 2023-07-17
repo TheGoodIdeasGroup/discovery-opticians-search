@@ -15,4 +15,10 @@ export default makeStyles(() => ({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  cardContent: {
+    backgroundColor: "#1d1d1d",
+    color: "white",
+    height: "100%",
+    width: "100%",
+  },
 }))

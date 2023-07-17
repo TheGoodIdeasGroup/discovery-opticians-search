@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Grid, Box, Typography, Button } from "@material-ui/core"
+import { Grid, Box, Typography } from "@material-ui/core"
 
 import PhoneIcon from "@material-ui/icons/Phone"
 import EmailIcon from "@material-ui/icons/Email"
@@ -21,25 +21,22 @@ export default function ContactDetails({ tel, website, social_media }) {
         }}
       >
         <Box justifyContent="flex-start" display="flex">
-          <Button
+          <button
+            className="location-info-button"
             style={{
               display: "flex",
-              alignItems: "flex-start",
-              justifyContent: "center",
+              alignItems: "center",
+              justifyContent: "flex-start",
             }}
             size="small"
             color="primary"
             onClick={() => window.open(`tel:${tel}`, "_blank")}
           >
             <PhoneIcon />
-            <Typography
-              style={{ marginLeft: 10 }}
-              gutterBottom
-              variant="subtitle2"
-            >
+            <Typography style={{ marginLeft: 10 }} variant="subtitle2">
               {tel}
             </Typography>
-          </Button>
+          </button>
         </Box>
       </Box>
       {website && (
@@ -53,10 +50,11 @@ export default function ContactDetails({ tel, website, social_media }) {
           justifyContent="space-between"
         >
           <Box justifyContent="flex-start" display="flex">
-            <Button
+            <button
+              className="location-info-button"
               style={{
                 display: "flex",
-                alignItems: "flex-start",
+                alignItems: "center",
                 justifyContent: "flex-start",
               }}
               size="small"
@@ -66,12 +64,11 @@ export default function ContactDetails({ tel, website, social_media }) {
               <WebIcon />
               <Typography
                 style={{ marginLeft: 10, marginBottom: 0 }}
-                gutterBottom
                 variant="subtitle2"
               >
                 {website}
               </Typography>
-            </Button>
+            </button>
           </Box>
         </Box>
       )}

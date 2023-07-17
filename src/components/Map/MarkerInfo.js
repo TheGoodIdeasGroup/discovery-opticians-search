@@ -4,6 +4,8 @@ import { Marker, MarkerClusterer } from "@react-google-maps/api"
 
 import CustomInfoWindow from "./CustomInfoWindow"
 
+import Circle from "../../icons/circle.svg"
+
 export default function MarkerInfo({
   place,
   clusterer,
@@ -22,10 +24,9 @@ export default function MarkerInfo({
 
   const { name, fsq_id } = place
 
-  const options = {
-    imagePath:
-      "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m", // so you must have m1.png, m2.png, m3.png, m4.png, m5.png and m6.png in that folder
-  }
+  // const options = {
+  //   imagePath: require("../../icons/circle.svg"), // so you must have m1.png, m2.png, m3.png, m4.png, m5.png and m6.png in that folder
+  // }
 
   const handleClickedMarker = (place) => {
     setChildClicked({
@@ -41,11 +42,12 @@ export default function MarkerInfo({
   return (
     <>
       <Marker
-        options={options}
+        // options={options}
         onClick={() => handleClickedMarker(place)}
         key={createKey(place)}
         position={placeLatLng}
         clusterer={clusterer}
+        icon={{ url: Circle, scale: 0.5 }}
       />
       {infoOpen && (
         <CustomInfoWindow name={place.name} position={placeLatLng} />

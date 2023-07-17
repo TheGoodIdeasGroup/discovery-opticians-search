@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react"
 import { GoogleMap } from "@react-google-maps/api"
 
 import MapMarkers from "./MapMarkers"
-
+import mapStyles from "../mapStyles"
 const Map = ({
   places,
   country,
@@ -29,7 +29,11 @@ const Map = ({
 
   return (
     <GoogleMap
-      mapContainerStyle={{ width: "100%", height: "100%" }}
+      mapContainerStyle={{
+        width: "100%",
+        height: "calc(100vh - 70px)",
+        marginTop: 70,
+      }}
       center={center}
       zoom={12}
       onLoad={() => console.log(center)}
@@ -48,8 +52,5 @@ const Map = ({
     </GoogleMap>
   )
 }
-
-const mapStyles = null
-//mapstyles go here
 
 export default Map

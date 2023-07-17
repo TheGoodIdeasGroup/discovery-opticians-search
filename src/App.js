@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import "./App.css"
+import "./App.scss"
 
 import axios from "axios"
 import { useLoadScript } from "@react-google-maps/api"
@@ -77,7 +77,7 @@ function App() {
   if (!isLoaded) return "Loading Maps"
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/optician-search">
       <CssBaseline />
       <Header />
       <Routes>

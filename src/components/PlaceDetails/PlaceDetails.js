@@ -7,7 +7,6 @@ import {
   CardContent,
   CardActions,
   Chip,
-  Button,
 } from "@material-ui/core"
 
 import LocationOnIcon from "@material-ui/icons/LocationOn"
@@ -22,6 +21,7 @@ import useStyles from "./styles"
 
 //react-router-dom
 import { Link } from "react-router-dom"
+import { MicNone } from "@material-ui/icons"
 
 const PlaceDetails = ({ place, refProp, selected }) => {
   const classes = useStyles()
@@ -39,7 +39,7 @@ const PlaceDetails = ({ place, refProp, selected }) => {
   } = place
 
   return (
-    <Card elevation={6} id={fsq_id} style={{ height: "100%", width: "100%" }}>
+    <Card elevation={6} id={fsq_id} className={classes.cardContent}>
       <CardContent style={{ padding: 0, marginBottom: 20, width: "100%" }}>
         <div
           style={{
@@ -48,7 +48,6 @@ const PlaceDetails = ({ place, refProp, selected }) => {
             marginLeft: 20,
             marginRight: 20,
           }}
-          className="card-content"
         >
           <Typography gutterBottom variant={"h5"}>
             {name}
@@ -150,18 +149,38 @@ const PlaceDetails = ({ place, refProp, selected }) => {
           </Box> */}
         </div>
         <CardActions>
-          <Link to={{ pathname: `/location/${fsq_id}` }}>
-            <Button
+          <Link
+            to={{ pathname: `/location/${fsq_id}` }}
+            style={{
+              backgroundColor: "white",
+              textDecoration: "none",
+              width: 130,
+              marginLeft: 10,
+              textAlign: "center",
+              borderRadius: 20,
+            }}
+          >
+            <button
               style={{
+                textAlign: "center",
+                color: "#1d1d1d",
+                textDecoration: "none",
                 display: "flex",
-                alignItems: "flex-start",
+                alignItems: "center",
                 justifyContent: "center",
+                paddingTop: 13,
+                paddingBottom: 5,
+                borderRadius: 40,
+                width: "100%",
+                border: 0,
+                fontSize: 15,
+                lineHeight: 1,
               }}
               size="small"
               color="primary"
             >
               View Location
-            </Button>
+            </button>
           </Link>
         </CardActions>
       </CardContent>

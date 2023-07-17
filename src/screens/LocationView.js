@@ -68,6 +68,11 @@ const LocationView = () => {
       hours,
     } = place
 
+    let hasHours = false
+    if (hours.regular || hours.display) {
+      hasHours = true
+    }
+
     const lat = geocodes.main.latitude
       ? geocodes.main.latitude
       : geocodes.roof.latitude
@@ -76,12 +81,18 @@ const LocationView = () => {
       : geocodes.roof.longitude
 
     return (
-      <Grid container style={{ height: "calc(100vh - 64px)", width: "100%" }}>
-        <Grid item xs={12} md={6}>
+      <Grid container style={{ height: "calc(100vh - 90px)", width: "100%" }}>
+        <Grid
+          item
+          xs={12}
+          md={4}
+          id="locationInfoContainer"
+          style={{ height: "100%" }}
+        >
           <Box>
             <Typography
               gutterBottom
-              variant="h4"
+              variant="h1"
               style={{ paddingLeft: 20, paddingRight: 20, marginTop: 20 }}
             >
               {name}
@@ -152,13 +163,14 @@ const LocationView = () => {
                       key={cat.id}
                       size="small"
                       label={cat.name}
+                      className="single-chip"
                     />
                   )
                 })}
               </Box>
             )}
           </Box>
-          {hours && (
+          {hasHours && (
             <Box padding={2}>
               <Typography variant="h5" gutterBottom>
                 Opening Hours
@@ -168,7 +180,12 @@ const LocationView = () => {
           )}
         </Grid>
         {geocodes && (
-          <Grid item xs={12} md={6} style={{ height: "100%", width: "100%" }}>
+          <Grid
+            item
+            xs={12}
+            md={8}
+            style={{ height: "calc(100% - 90px)", width: "100%" }}
+          >
             <SingleMap
               place={place}
               lat={lat}

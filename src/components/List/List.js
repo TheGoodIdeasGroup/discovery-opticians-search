@@ -32,6 +32,7 @@ const List = ({
   setLatLng,
   center,
   setCenter,
+  drawerOpen,
 }) => {
   const classes = useStyles()
 
@@ -56,7 +57,7 @@ const List = ({
     if (id) {
       document
         .getElementById(id)
-        .scrollIntoView({ behavior: "smooth", block: "start" })
+        .scrollIntoView({ behavior: "smooth", block: "center" })
     }
   }
 
@@ -76,11 +77,13 @@ const List = ({
   })
 
   return (
-    <div className={classes.container}>
-      <Typography variant={"h4"}>Optician Search</Typography>
-      <Typography variant={"h6"} gutterBottom>
-        Search by postcode, town, or address
+    <div className={classes.container} style={{ opacity: drawerOpen ? 1 : 0 }}>
+      <Typography variant={"h1"}>
+        Find Optometrists and Eye Care stores in your area
       </Typography>
+      {/* <Typography variant={"h6"} gutterBottom>
+        Search by postcode, town, or address
+      </Typography> */}
       <Combobox
         style={{ marginBottom: 20 }}
         onSelect={async (address) => {
@@ -101,6 +104,8 @@ const List = ({
           value={value}
           onChange={(e) => setValue(e.target.value)}
           disabled={!ready}
+          className="search-input"
+          placeholder={"Search by postcode, town, or address"}
         />
         <ComboboxPopover>
           <ComboboxList>
@@ -114,7 +119,7 @@ const List = ({
 
       <Grid container spacing={3} className={classes.list}>
         {places?.map((place, idx) => (
-          <Grid item key={idx} md={12} sm={6} xs={12} justifyContent="stretch">
+          <Grid item key={idx} md={12} sm={12} xs={12}>
             <PlaceDetails place={place} id={place.id} />
           </Grid>
         ))}

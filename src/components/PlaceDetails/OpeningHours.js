@@ -9,9 +9,16 @@ import TableRow from "@mui/material/TableRow"
 import Paper from "@mui/material/Paper"
 
 const OpeningHours = ({ open_hours }) => {
+  const handleOpeningHours = (hours) => {
+    const splitHours = hours
+      .split("; ")
+      .flatMap((line, i) => [line, <br key={`line-${i}`} />])
+    return splitHours
+  }
+
   if (open_hours) {
     if (open_hours.display) {
-      return <h4>{open_hours.display}</h4>
+      return <h4>{handleOpeningHours(open_hours.display)}</h4>
     } else if (!open_hours.regular && open_hours.display)
       return (
         <TableContainer component={Paper}>

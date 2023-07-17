@@ -4,6 +4,7 @@ import React, { useState } from "react"
 import MarkerInfo from "./MarkerInfo"
 
 import { MarkerClusterer } from "@react-google-maps/api"
+import ClusterIcon from "../../icons/m1.png"
 
 const MapContents = ({
   places,
@@ -13,13 +14,41 @@ const MapContents = ({
 }) => {
   const [infoOpen, setInfoOpen] = useState(false)
 
-  const options = {
-    imagePath:
-      "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m", // so you must have m1.png, m2.png, m3.png, m4.png, m5.png and m6.png in that folder
-  }
+  const styles = [
+    {
+      url: ClusterIcon,
+      height: 53,
+      lineHeight: 53,
+      width: 53,
+    },
+    {
+      url: ClusterIcon,
+      height: 56,
+      lineHeight: 56,
+      width: 56,
+    },
+    {
+      url: ClusterIcon,
+      height: 66,
+      lineHeight: 66,
+      width: 66,
+    },
+    {
+      url: ClusterIcon,
+      height: 78,
+      lineHeight: 78,
+      width: 78,
+    },
+    {
+      url: ClusterIcon,
+      height: 90,
+      lineHeight: 90,
+      width: 90,
+    },
+  ]
 
   return (
-    <MarkerClusterer options={options}>
+    <MarkerClusterer styles={styles}>
       {(clusterer) =>
         places?.map((place, idx) => {
           // console.log({ place, idx })

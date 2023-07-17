@@ -7,6 +7,9 @@ import { Grid } from "@material-ui/core"
 import List from "../components/List/List"
 import Map from "../components/Map/Map"
 
+import ChevronLeft from "../icons/chevron-left-solid.svg"
+import ChevronRight from "../icons/chevron-right-solid.svg"
+
 const MapView = ({
   places,
   country,
@@ -22,6 +25,8 @@ const MapView = ({
   const [childClicked, setChildClicked] = useState({})
   const [center, setCenter] = useState({ lat: 51.44985, lng: -0.00395 })
 
+  const [drawerOpen, setDrawerOpen] = useState(true)
+
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -34,10 +39,21 @@ const MapView = ({
     }
   }, [])
 
+  const handleDrawer = () => {
+    setDrawerOpen(!drawerOpen)
+  }
+
   return (
     <Grid container spacing={0} style={{ width: "100%" }}>
-      <Grid item sm={12} md={5} order={{ sm: 12, md: 1 }}>
+      <Grid
+        item
+        xs={drawerOpen ? 11 : 1}
+        sm={drawerOpen ? 8 : 1}
+        md={5}
+        id="listContainer"
+      >
         <List
+          drawerOpen={drawerOpen}
           center={center}
           setCenter={setCenter}
           latLng={latLng}
@@ -50,8 +66,17 @@ const MapView = ({
           childClicked={childClicked}
           setChildClicked={setChildClicked}
         />
+        <button id="drawerToggle" class="drawer-toggle" onClick={handleDrawer}>
+          <img
+            width="10"
+            height="10"
+            src={drawerOpen ? ChevronLeft : ChevronRight}
+            class="chevron-icon"
+            alt="chevron"
+          />
+        </button>
       </Grid>
-      <Grid item sm={12} md={7} order={{ sm: 1, md: 12 }}>
+      <Grid item xs={drawerOpen ? 1 : 11} sm={drawerOpen ? 4 : 11} md={7}>
         <Map
           userLocation={userLocation}
           userLocationGranted={userLocationGranted}
